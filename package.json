@@ -1,0 +1,33 @@
+{
+  "name": "wa-outreach",
+  "version": "1.0.0",
+  "description": "Bulk WhatsApp Messaging Web Application with Excel file upload and background queue delays",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "whatsapp",
+    "outreach",
+    "baileys",
+    "excel",
+    "express",
+    "bulk-messaging"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.16",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-session": "^1.18.0",
+    "multer": "^1.4.5-lts.1",
+    "node-cache": "^5.1.2",
+    "pino": "^9.4.0",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.7.5",
+    "xlsx": "^0.18.5"
+  }
+}

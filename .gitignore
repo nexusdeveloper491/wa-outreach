@@ -1,0 +1,53 @@
+﻿# WhatsApp Auth Sessions & Multi-Device Tokens (CRITICAL)
+auth_info_baileys/
+baileys_auth_info/
+*.session
+*.session-journal
+sessions/
+
+# Environment Variables & Secrets (CRITICAL)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-debug.log*
+
+# File Uploads & Temporary Media
+uploads/
+temp/
+tmp/
+*.tmp
+
+# Operating System Artifacts
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE & Editor Configurations
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build Output
+dist/
+build/
+*.log

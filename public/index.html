@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk WhatsApp Outreach & Chat CRM Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app-container">
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-modal" class="modal-overlay">
+      <div class="glass-card login-card animate-fade-in">
+        <div class="brand-header">
+          <div class="logo-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <h2>WA Outreach Hub</h2>
+          <p>Admin Authorization Required</p>
+        </div>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="admin-password"><i class="fa-solid fa-lock"></i> Admin Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="admin-password" placeholder="Enter password..." required autocomplete="current-password">
+              <button type="button" id="toggle-pwd-btn"><i class="fa-solid fa-eye"></i></button>
+            </div>
+          </div>
+          <div id="login-error" class="alert alert-danger hidden"></div>
+          <button type="submit" class="btn btn-primary btn-block">
+            <span>Login to Portal</span> <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- MAIN DASHBOARD VIEW -->
+    <div id="dashboard-view" class="hidden">
+      <!-- TOP NAVIGATION BAR -->
+      <header class="top-nav">
+        <div class="brand">
+          <div class="logo-icon-sm"><i class="fa-brands fa-whatsapp"></i></div>
+          <div class="brand-text">
+            <h1>WA Outreach <span class="badge-pro">PRO</span></h1>
+            <span class="sub-tag">Bulk Automation & WhatsApp Web Inbox</span>
+          </div>
+        </div>
+
+        <!-- MAIN PLATFORM TABS -->
+        <div class="main-platform-tabs">
+          <button type="button" class="main-tab-btn active" id="main-tab-outreach">
+            <i class="fa-solid fa-rocket"></i> 🚀 Bulk Outreach Automation
+          </button>
+          <button type="button" class="main-tab-btn" id="main-tab-inbox">
+            <i class="fa-solid fa-comments"></i> 💬 WhatsApp Web Inbox
+          </button>
+        </div>
+
+        <div class="nav-right">
+          <div class="connection-badge" id="nav-connection-badge">
+            <span class="status-dot disconnected"></span>
+            <span id="nav-status-text">Disconnected</span>
+          </div>
+          <button id="logout-btn" class="btn btn-secondary btn-sm">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </button>
+        </div>
+      </header>
+
+      <!-- TAB 1: BULK OUTREACH ENGINE VIEW -->
+      <div id="outreach-view" class="main-tab-view active">
+        <main class="dashboard-grid">
+
+          <!-- COLUMN 1: WHATSAPP SETUP & CAMPAIGN CONFIG -->
+          <section class="grid-col left-col">
+
+            <!-- CARD 0: ENGINE MODE SELECTOR (META CLOUD API VS BAILEYS) -->
+            <div class="glass-card panel-card highlight-card">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-bolt color-emerald"></i> Select Outreach Engine Mode</h3>
+              </div>
+              <div class="engine-mode-toggle">
+                <button type="button" class="mode-btn active" id="mode-meta-btn" data-mode="meta_cloud">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  <div class="mode-info">
+                    <span class="mode-title">Official Meta Cloud API</span>
+                    <span class="mode-sub">Recommended • 0% Ban Risk • Fast</span>
+                  </div>
+                </button>
+                <button type="button" class="mode-btn" id="mode-baileys-btn" data-mode="baileys">
+                  <i class="fa-solid fa-qrcode"></i>
+                  <div class="mode-info">
+                    <span class="mode-title">Baileys Web Socket</span>
+                    <span class="mode-sub">Legacy • Phone Linking Required</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- CARD 1A: META CLOUD API CREDENTIALS FORM -->
+            <div id="card-meta-config" class="glass-card panel-card margin-top">
+              <div class="card-header space-between">
+                <h3><i class="fa-brands fa-meta color-indigo"></i> Meta Cloud API Credentials</h3>
+                <span class="badge-subtle"><i class="fa-solid fa-lock"></i> Secured</span>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="meta-phone-id"><i class="fa-solid fa-id-badge"></i> Phone Number ID</label>
+                  <input type="text" id="meta-phone-id" class="form-control" placeholder="e.g. 104857692847582">
+                </div>
+
+                <div class="form-group">
+                  <label for="meta-token"><i class="fa-solid fa-key"></i> System Access Token</label>
+                  <div class="password-wrapper">
+                    <input type="password" id="meta-token" class="form-control" placeholder="Bearer Access Token from Meta Developer Portal">
+                    <button type="button" id="toggle-token-btn"><i class="fa-solid fa-eye"></i></button>
+                  </div>
+                </div>
+
+                <div class="delay-row">
+                  <div class="form-group">
+                    <label for="meta-template-name"><i class="fa-solid fa-file-signature"></i> Approved Template Name</label>
+                    <input type="text" id="meta-template-name" class="form-control" value="nexus_outreach_v1" placeholder="e.g. nexus_outreach_v1">
+                  </div>
+                  <div class="form-group">
+                    <label for="meta-template-lang"><i class="fa-solid fa-language"></i> Language Code</label>
+                    <input type="text" id="meta-template-lang" class="form-control" value="en" placeholder="e.g. en or en_US">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 1B: WHATSAPP BAILEYS LINKING METHOD (HIDDEN BY DEFAULT WHEN META MODE IS ACTIVE) -->
+            <div id="card-baileys-config" class="glass-card panel-card margin-top hidden">
+              <div class="card-header space-between">
+                <h3><i class="fa-brands fa-whatsapp color-emerald"></i> WhatsApp Device Link (Baileys)</h3>
+                <button id="refresh-qr-btn" class="btn-icon" title="Refresh Connection"><i class="fa-solid fa-rotate-right"></i></button>
+              </div>
+
+              <!-- DUAL LINKING TABS -->
+              <div class="linking-tabs" id="linking-tabs-container">
+                <button type="button" class="tab-btn active" id="tab-qr-btn" data-target="tab-qr">
+                  <i class="fa-solid fa-qrcode"></i> Scan QR Code
+                </button>
+                <button type="button" class="tab-btn" id="tab-pairing-btn" data-target="tab-pairing">
+                  <i class="fa-solid fa-mobile-screen-button"></i> Pairing Code
+                </button>
+              </div>
+
+              <div class="card-body center-content margin-top-sm">
+                <!-- TAB 1: QR CODE DISPLAY -->
+                <div id="tab-qr" class="tab-content active">
+                  <div id="qr-container" class="qr-box">
+                    <div class="qr-placeholder" id="qr-placeholder">
+                      <i class="fa-solid fa-qrcode placeholder-icon"></i>
+                      <p>Connecting engine...</p>
+                    </div>
+                    <img id="qr-image" class="hidden" alt="Scan QR Code to Connect">
+                  </div>
+                </div>
+
+                <!-- TAB 2: PHONE NUMBER PAIRING CODE -->
+                <div id="tab-pairing" class="tab-content">
+                  <div class="pairing-box">
+                    <div class="form-group text-left">
+                      <label for="pairing-phone"><i class="fa-solid fa-phone"></i> WhatsApp Phone Number</label>
+                      <div class="phone-input-group">
+                        <input type="text" id="pairing-phone" class="form-control" placeholder="e.g. 919876543210" autocomplete="off">
+                        <button type="button" id="get-pairing-code-btn" class="btn btn-emerald btn-sm">
+                          <span>Get Code</span> <i class="fa-solid fa-key"></i>
+                        </button>
+                      </div>
+                      <span class="input-hint">Include country code without + or spaces (e.g. 91 for India).</span>
+                    </div>
+
+                    <div id="pairing-code-result" class="pairing-code-card hidden">
+                      <span class="pairing-code-label">8-Digit Pairing Code:</span>
+                      <div class="pairing-code-display" id="pairing-code-value">---- ----</div>
+                      <p class="pairing-code-sub">Open WhatsApp on phone &gt; Linked Devices &gt; Link with phone number instead &gt; Enter code above.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="user-info-box" class="user-info-box hidden margin-top-sm">
+                  <div class="user-avatar"><i class="fa-solid fa-user-check"></i></div>
+                  <div class="user-details text-left">
+                    <h4 id="user-phone">Connected Number</h4>
+                    <span class="online-tag"><i class="fa-solid fa-circle"></i> Persistent Session Active</span>
+                  </div>
+                </div>
+
+                <div class="connection-actions margin-top-sm">
+                  <button id="connect-wa-btn" class="btn btn-emerald btn-sm"><i class="fa-solid fa-bolt"></i> Re-Init Engine</button>
+                  <button id="disconnect-wa-btn" class="btn btn-danger btn-sm hidden"><i class="fa-solid fa-power-off"></i> Logout WhatsApp</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 2: EXCEL / CSV UPLOAD & MANUAL PHONE INPUT -->
+            <div class="glass-card panel-card margin-top">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-users color-emerald"></i> Lead Input & Phone Numbers</h3>
+              </div>
+
+              <div class="linking-tabs" id="lead-input-tabs-container">
+                <button type="button" class="tab-btn active" id="tab-excel-btn" data-target="tab-excel">
+                  <i class="fa-solid fa-file-excel"></i> Excel / CSV Upload
+                </button>
+                <button type="button" class="tab-btn" id="tab-manual-btn" data-target="tab-manual">
+                  <i class="fa-solid fa-keyboard"></i> Manual Textarea Input
+                </button>
+              </div>
+
+              <div class="card-body">
+                <div id="tab-excel" class="lead-tab-content active">
+                  <div id="drop-zone" class="drop-zone">
+                    <input type="file" id="file-input" accept=".xlsx, .xls, .csv" class="hidden-input">
+                    <i class="fa-solid fa-cloud-arrow-up drop-icon"></i>
+                    <p class="drop-title">Drag & Drop Excel / CSV file here</p>
+                    <span class="drop-subtitle">Supports: Business Name | Phone Number | Map URL</span>
+                    <button type="button" class="btn btn-secondary btn-sm margin-top-sm" id="browse-btn">Browse Files</button>
+                  </div>
+
+                  <div id="upload-status" class="upload-status-info hidden"></div>
+
+                  <div id="column-mapper" class="column-mapper-box hidden">
+                    <div class="mapper-title"><i class="fa-solid fa-sliders"></i> Verify Column Mappings</div>
+                    <div class="mapper-grid">
+                      <div class="form-group">
+                        <label>Business Name</label>
+                        <select id="map-shop-col" class="form-control"></select>
+                      </div>
+                      <div class="form-group">
+                        <label>Phone Number</label>
+                        <select id="map-phone-col" class="form-control"></select>
+                      </div>
+                      <div class="form-group">
+                        <label>Map URL / Link</label>
+                        <select id="map-url-col" class="form-control"></select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="tab-manual" class="lead-tab-content">
+                  <div class="form-group">
+                    <label for="manual-phone-input"><i class="fa-solid fa-align-left"></i> Paste Multiple Phone Numbers</label>
+                    <textarea id="manual-phone-input" rows="5" class="form-control" placeholder="Paste or type phone numbers separated by spaces, commas, or new lines...&#10;e.g.&#10;919876543210 917001681958&#10;9876543210, 07001681958"></textarea>
+                    <span class="input-hint">Numbers will be sanitized automatically. 10-digit Indian numbers auto-prefix with 91.</span>
+                  </div>
+                  <button type="button" id="parse-manual-btn" class="btn btn-emerald btn-block btn-sm">
+                    <i class="fa-solid fa-filter"></i> Parse & Load Manual Numbers
+                  </button>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- CARD 3: TEMPLATE & DELAY CONFIG -->
+            <div class="glass-card panel-card margin-top">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-sliders color-emerald"></i> Campaign Settings</h3>
+              </div>
+              <div class="card-body">
+
+                <!-- BAILEYS MESSAGE TEMPLATE TEXTAREA (HIDDEN IN META CLOUD MODE) -->
+                <div id="baileys-template-container" class="form-group hidden">
+                  <label for="message-template">Message Template (Baileys Mode)</label>
+                  <div class="variable-pills">
+                    <span class="var-tag" data-var="{shop_name}"><i class="fa-solid fa-plus"></i> {shop_name}</span>
+                    <span class="var-tag" data-var="{phone}"><i class="fa-solid fa-plus"></i> {phone}</span>
+                    <span class="var-tag" data-var="{map_url}"><i class="fa-solid fa-plus"></i> {map_url}</span>
+                  </div>
+                  <textarea id="message-template" rows="4" class="form-control" placeholder="Hello {shop_name}, check out our store location here: {map_url}"></textarea>
+                </div>
+
+                <div class="delay-row">
+                  <div class="form-group">
+                    <label><i class="fa-solid fa-hourglass-half"></i> Min Delay (sec)</label>
+                    <input type="number" id="min-delay" class="form-control" value="10" min="1" max="3600">
+                  </div>
+                  <div class="form-group">
+                    <label><i class="fa-solid fa-hourglass"></i> Max Delay (sec)</label>
+                    <input type="number" id="max-delay" class="form-control" value="20" min="1" max="3600">
+                  </div>
+                </div>
+
+                <div class="form-group margin-top-sm">
+                  <label><i class="fa-solid fa-bullseye"></i> Queue Cap Limit (Max Leads)</label>
+                  <input type="number" id="target-cap" class="form-control" value="100" min="1" max="500">
+                </div>
+
+                <div class="campaign-trigger-row margin-top">
+                  <button id="start-campaign-btn" class="btn btn-emerald btn-block btn-lg" disabled>
+                    <i class="fa-solid fa-paper-plane"></i> Launch Background Campaign
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- COLUMN 2: LIVE MONITORING & LOGS -->
+          <section class="grid-col right-col">
+
+            <!-- CAMPAIGN MONITOR & METRICS -->
+            <div class="glass-card panel-card">
+              <div class="card-header space-between">
+                <h3><i class="fa-solid fa-gauge-high color-emerald"></i> Live Campaign Queue Engine</h3>
+                <div class="campaign-controls">
+                  <button id="pause-btn" class="btn btn-warning btn-sm hidden"><i class="fa-solid fa-pause"></i> Pause</button>
+                  <button id="resume-btn" class="btn btn-emerald btn-sm hidden"><i class="fa-solid fa-play"></i> Resume</button>
+                  <button id="stop-btn" class="btn btn-danger btn-sm hidden"><i class="fa-solid fa-stop"></i> Stop</button>
+                </div>
+              </div>
+
+              <div class="card-body">
+                <div class="engine-banner">
+                  <div class="engine-state">
+                    <span class="state-label">Queue Engine:</span>
+                    <span id="engine-status-badge" class="badge-status idle">IDLE</span>
+                  </div>
+                  <div class="countdown-box">
+                    <span class="countdown-label">Next Message In:</span>
+                    <span id="countdown-timer" class="timer-digits">--:--</span>
+                  </div>
+                </div>
+
+                <div class="progress-section margin-top">
+                  <div class="progress-info space-between">
+                    <span id="progress-text">0 / 0 Leads Processed</span>
+                    <span id="progress-percent" class="bold-emerald">0%</span>
+                  </div>
+                  <div class="progress-track">
+                    <div id="progress-fill" class="progress-fill" style="width: 0%;"></div>
+                  </div>
+                </div>
+
+                <div class="stats-grid margin-top">
+                  <div class="stat-card">
+                    <div class="stat-icon icon-total"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-data">
+                      <span class="stat-value" id="stat-total">0</span>
+                      <span class="stat-desc">Total Queue</span>
+                    </div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-icon icon-sent"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="stat-data">
+                      <span class="stat-value color-emerald" id="stat-sent">0</span>
+                      <span class="stat-desc">Delivered</span>
+                    </div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-icon icon-pending"><i class="fa-solid fa-clock"></i></div>
+                    <div class="stat-data">
+                      <span class="stat-value color-warning" id="stat-pending">0</span>
+                      <span class="stat-desc">Pending</span>
+                    </div>
+                  </div>
+                  <div class="stat-card">
+                    <div class="stat-icon icon-failed"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="stat-data">
+                      <span class="stat-value color-danger" id="stat-failed">0</span>
+                      <span class="stat-desc">Failed</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- INTERACTIVE PREVIEW LEADS TABLE -->
+            <div class="glass-card panel-card margin-top">
+              <div class="card-header space-between">
+                <h3><i class="fa-solid fa-table-list color-emerald"></i> Loaded Leads Preview</h3>
+                <span class="badge-subtle" id="preview-count">0 Leads</span>
+              </div>
+              <div class="card-body padding-0">
+                <div class="table-responsive max-height-300">
+                  <table class="data-table" id="leads-table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Business Name</th>
+                        <th>Phone Number</th>
+                        <th>Map URL</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="leads-tbody">
+                      <tr>
+                        <td colspan="5" class="text-center text-muted pad-20">No leads loaded yet. Upload an Excel or CSV file (Business Name | Phone Number | Map URL), or paste manual numbers to begin.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- LIVE REAL-TIME LOGS TABLE -->
+            <div class="glass-card panel-card margin-top">
+              <div class="card-header space-between">
+                <h3><i class="fa-solid fa-terminal color-emerald"></i> Activity Logs</h3>
+                <button id="clear-logs-btn" class="btn-text btn-sm"><i class="fa-solid fa-trash-can"></i> Clear</button>
+              </div>
+              <div class="card-body padding-0">
+                <div class="log-console" id="log-console">
+                  <div class="log-row info">
+                    <span class="log-time">[System]</span>
+                    <span class="log-msg">System initialized. Waiting for action...</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </section>
+        </main>
+      </div>
+
+      <!-- TAB 2: WHATSAPP WEB INBOX & CHAT CRM VIEW -->
+      <div id="inbox-view" class="main-tab-view">
+        <div class="glass-card inbox-container">
+          
+          <div class="inbox-sidebar">
+            <div class="sidebar-header">
+              <h3><i class="fa-solid fa-comments color-emerald"></i> Recent Conversations</h3>
+            </div>
+            <div class="sidebar-search">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" id="chat-search-input" placeholder="Search chats by name or number...">
+              </div>
+            </div>
+            <div class="chat-threads-list" id="chat-threads-list">
+              <div class="no-chats-placeholder">
+                <i class="fa-solid fa-comment-dots"></i>
+                <p>No active chat threads yet.</p>
+                <span>Incoming and outgoing WhatsApp messages will appear here in real time.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="inbox-chat-area" id="inbox-chat-area">
+            <div class="empty-chat-state" id="empty-chat-state">
+              <i class="fa-brands fa-whatsapp empty-chat-icon"></i>
+              <h3>WhatsApp Web Inbox</h3>
+              <p>Select a contact from the left list to view conversation history and send direct 1-on-1 messages.</p>
+            </div>
+
+            <div class="active-chat-container hidden" id="active-chat-container">
+              <div class="chat-header">
+                <div class="chat-header-info">
+                  <div class="chat-avatar" id="active-chat-avatar">C</div>
+                  <div>
+                    <h4 id="active-chat-name">Client Name</h4>
+                    <span class="chat-status-text" id="active-chat-phone">919876543210</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="chat-messages-body" id="chat-messages-body">
+              </div>
+
+              <div class="chat-composer">
+                <input type="text" id="composer-text" placeholder="Type a message..." autocomplete="off">
+                <button type="button" id="composer-send-btn" class="btn btn-emerald">
+                  <i class="fa-solid fa-paper-plane"></i> Send
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="inbox-tools-sidebar">
+            <div class="tools-header">
+              <h3><i class="fa-solid fa-circle-info color-emerald"></i> Contact Info & Tools</h3>
+            </div>
+            <div class="tools-body">
+              <div class="contact-card text-center" id="contact-info-card">
+                <div class="avatar-lg" id="tools-contact-avatar"><i class="fa-solid fa-user"></i></div>
+                <h4 id="tools-contact-name">Select a Chat</h4>
+                <p id="tools-contact-phone" class="text-muted">--</p>
+              </div>
+
+              <div class="quick-replies-box margin-top">
+                <div class="tools-title"><i class="fa-solid fa-bolt color-warning"></i> Quick Templates</div>
+                <button type="button" class="quick-reply-btn" data-reply="Hello! How can I assist you today?">
+                  👋 General Greeting
+                </button>
+                <button type="button" class="quick-reply-btn" data-reply="Thank you for reaching out! Here is our catalog details.">
+                  📦 Catalog Request
+                </button>
+                <button type="button" class="quick-reply-btn" data-reply="Our store is open Monday to Saturday, 10 AM - 8 PM.">
+                  🕒 Working Hours
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
