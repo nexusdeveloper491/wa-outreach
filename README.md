@@ -13,7 +13,7 @@
 
 **A high-performance, full-stack WhatsApp outreach and customer messaging application featuring dual dispatch engines, dynamic Excel parsing, anti-ban randomized delays, real-time Socket.io dashboards, and a live two-way chat inbox.**
 
-[⚡ Quick Start](#-quick-start) • [✨ Features](#-features) • [🏗️ Architecture](#️-architecture) • [🐳 Docker](#-docker-deployment) • [🔒 Security](#-security--best-practices)
+[⚡ Quick Start](#-quick-start) • [✨ Features](#-features) • [🏗️ Architecture](#️-system-architecture) • [🐳 Docker](#-docker-deployment) • [🔒 Security](#-security--best-practices)
 
 </div>
 
@@ -98,26 +98,26 @@
 
 ```mermaid
 flowchart TD
-    User([Admin User]) -->|HTTP / WebSocket| WebUI[Modern Glassmorphism Web UI]
-    WebUI -->|Socket.io & REST API| Express[Express.js Server]
+    User(["Admin User"]) -->|"HTTP / WebSocket"| WebUI["Modern Glassmorphism Web UI"]
+    WebUI -->|"Socket.io & REST API"| Express["Express.js Server"]
     
-    subgraph Backend Server
-        Express --> Auth[Session Auth Middleware]
-        Express --> LeadParser[Excel / CSV Parser (Multer + SheetJS)]
-        Express --> QueueManager[Campaign Dispatcher & Delay Queue]
-        QueueManager --> EngineRouter{Engine Mode}
+    subgraph BackendServer ["Backend Server Architecture"]
+        Express --> Auth["Session Auth Middleware"]
+        Express --> LeadParser["Excel / CSV Parser (Multer + SheetJS)"]
+        Express --> QueueManager["Campaign Dispatcher & Delay Queue"]
+        QueueManager --> EngineRouter{"Engine Mode"}
         
-        EngineRouter -->|Baileys Mode| BaileysEngine[Baileys Multi-Device Socket]
-        EngineRouter -->|Cloud API Mode| MetaEngine[Meta Cloud API Graph SDK]
+        EngineRouter -->|"Baileys Mode"| BaileysEngine["Baileys Multi-Device Socket"]
+        EngineRouter -->|"Cloud API Mode"| MetaEngine["Meta Cloud API Graph SDK"]
         
-        BaileysEngine --> Store[(Local Multi-File Auth Store)]
-        BaileysEngine --> ChatStore[(In-Memory 2-Way Chat Cache)]
+        BaileysEngine --> Store[("Local Multi-File Auth Store")]
+        BaileysEngine --> ChatStore[("In-Memory 2-Way Chat Cache")]
     end
     
-    BaileysEngine -->|End-to-End Encrypted| WhatsAppNetwork[WhatsApp Web Gateway]
-    MetaEngine -->|HTTPS REST| MetaGraph[Meta WhatsApp Business Cloud API]
+    BaileysEngine -->|"End-to-End Encrypted"| WhatsAppNetwork["WhatsApp Web Gateway"]
+    MetaEngine -->|"HTTPS REST"| MetaGraph["Meta WhatsApp Business Cloud API"]
     
-    WhatsAppNetwork --> Recipients([Customer WhatsApp Clients])
+    WhatsAppNetwork --> Recipients(["Customer WhatsApp Clients"])
     MetaGraph --> Recipients
 ```
 
